@@ -6,6 +6,27 @@ function App() {
   const [sync, setSync] = useState(false);
 
   useEffect(() => {
+    console.log("[hook 1]");
+    return () => {
+      console.log("umount");
+    };
+  });
+
+  useEffect(() => {
+    console.log("[hook 2]");
+  }, []);
+
+  useEffect(() => {
+    console.log("[hook 3]");
+  }, [sync]);
+
+  useEffect(() => {
+    console.log("[hook 4]");
+    document.title = "hello_" + count;
+  }, [sync]);
+
+  useEffect(() => {
+    console.log("[hook 5]");
     document.title = "hello_" + count;
   }, [sync, count]);
 
@@ -22,13 +43,7 @@ function App() {
         <button onClick={() => setSync((sync) => !sync)}>
           sync is {sync ? "true" : "false"}
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }
