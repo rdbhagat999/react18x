@@ -1,34 +1,22 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import "./App.css";
+import { CounterContext, CounterContextType } from "./contexts/counterContext";
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [sync, setSync] = useState(false);
-
-  useEffect(() => {
-    document.title = "hello_" + count;
-  }, [sync, count]);
+  const { decrement, getCount, increment } = useContext(
+    CounterContext
+  ) as CounterContextType;
 
   return (
     <>
       <h1 className="text-3xl text-red-500 font-bold underline">
-        Hello world!
+        {getCount()}
       </h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+        <button onClick={increment}>Increment</button>
 
-        <button onClick={() => setSync((sync) => !sync)}>
-          sync is {sync ? "true" : "false"}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        <button onClick={decrement}>Decrement</button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }
