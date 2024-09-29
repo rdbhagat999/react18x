@@ -1,34 +1,29 @@
-import { useEffect, useState } from "react";
+import { useReducer } from "react";
+import { initialState, counterReducer } from "./reducers/counterReducer";
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [sync, setSync] = useState(false);
-
-  useEffect(() => {
-    document.title = "hello_" + count;
-  }, [sync, count]);
+  const [state, dispatch] = useReducer(counterReducer, initialState);
 
   return (
     <>
-      <h1 className="text-3xl text-red-500 font-bold underline">
-        Hello world!
-      </h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+      <div className="flex justify-center items-center gap-4">
+        <button
+          className="py-2 px-4 rounded bg-blue-500 text-white text-2xl"
+          onClick={() => dispatch({ type: "decrement" })}
+        >
+          -
         </button>
-
-        <button onClick={() => setSync((sync) => !sync)}>
-          sync is {sync ? "true" : "false"}
+        <h1 className="text-3xl min-w-48 text-red-500 font-bold underline">
+          count is {state.count}
+        </h1>
+        <button
+          className="py-2 px-4 rounded bg-blue-500 text-white text-2xl"
+          onClick={() => dispatch({ type: "increment", payload: { value: 2 } })}
+        >
+          +
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }
