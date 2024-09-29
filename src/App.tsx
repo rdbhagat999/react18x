@@ -1,64 +1,86 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import "./App.css";
 
-function App() {
-  const countRef = useRef(0);
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const [count, setCount] = useState(0);
+const functionCounterSet = new Set();
 
-  const handleCount = () => {
-    inputRef?.current?.focus();
-    countRef.current++;
-    console.log("handleCount", countRef.current);
+function App() {
+  const [count, setCount] = useState(0);
+  const [counter, setCounter] = useState(0);
+
+  const handleCountIncrement = () => {
+    setCount(count + 1);
+    console.log("handleCountIncrement");
   };
 
-  useEffect(() => {
-    console.log("[useEffect] [onmount] component rendered", countRef.current);
-  }, []);
+  const handleCountDecrement = () => {
+    setCount(count - 1);
+    console.log("handleCountDecrement");
+  };
 
-  useEffect(() => {
-    console.log("[useEffect] component rendered", countRef.current);
-  });
+  // const useCallbackHandleCountIncrement = useCallback(() => {
+  //   setCount(count + 1);
+  //   console.log("useCallbackHandleCountIncrement");
+  // }, [count]);
 
-  console.log("component rendered", countRef.current);
+  const useCallbackHandleCountIncrement = useCallback(handleCountIncrement, [
+    count,
+  ]);
+
+  const useCallbackHandleCountDecrement = useCallback(handleCountDecrement, [
+    count,
+  ]);
+
+  const handleCounterDecrement = () => {
+    setCounter(counter - 1);
+    console.log("handleCounterDecrement");
+  };
+
+  // const useCallbackHandleCounterDecrement = useCallback(() => {
+  //   setCounter(counter - 1);
+  //   console.log("useCallbackHandleCounterDecrement");
+  // }, [counter]);
+
+  const useCallbackHandleCounterDecrement = useCallback(
+    handleCounterDecrement,
+    [counter]
+  );
+
+  console.log("component rendered", count);
+
+  functionCounterSet.add(useCallbackHandleCountIncrement);
+  functionCounterSet.add(useCallbackHandleCountDecrement);
+  functionCounterSet.add(useCallbackHandleCounterDecrement);
+
+  console.log("functionCounterSet", functionCounterSet);
 
   return (
     <>
-      <h1 className="text-3xl text-red-500 font-bold underline">
-        RefCount is {countRef.current}
-      </h1>
-      <h2 className="text-3xl text-red-500 font-bold underline">
-        Count is {count}
-      </h2>
       <div className="flex flex-col justify-center items-center gap-4">
-        <div className="mb-5">
-          <label
-            htmlFor="email"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        <div className=" flex gap-4">
+          <h1 className="text-3xl text-red-500 font-bold underline">
+            Counter is {counter}
+          </h1>
+
+          <button
+            className="px-4 py-2 rounded bg-blue-500 text-white"
+            onClick={useCallbackHandleCounterDecrement}
           >
-            Your email
-          </label>
-          <input
-            ref={inputRef}
-            type="email"
-            id="email"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            placeholder="name@email.com"
-            required
-          />
+            - Counter
+          </button>
         </div>
-        <button
-          className="px-4 py-2 rounded bg-blue-500 text-white"
-          onClick={handleCount}
-        >
-          + RefCount
-        </button>
-        <button
-          className="px-4 py-2 rounded bg-blue-500 text-white"
-          onClick={() => setCount(count + 1)}
-        >
-          + Count
-        </button>
+
+        <div className=" flex gap-4">
+          <h1 className="text-3xl text-red-500 font-bold underline">
+            Count is {count}
+          </h1>
+
+          <button
+            className="px-4 py-2 rounded bg-blue-500 text-white"
+            onClick={useCallbackHandleCountIncrement}
+          >
+            + Count
+          </button>
+        </div>
       </div>
     </>
   );
