@@ -1,7 +1,13 @@
-import { useCallback, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 
-const functionCounterSet = new Set();
+function ChildComponent({ counter }: { counter: number }) {
+  useEffect(() => {
+    console.log("ChildComponent rendered", counter);
+  });
+
+  return <div>Child component</div>;
+}
 
 function App() {
   const [count, setCount] = useState(0);
@@ -12,62 +18,21 @@ function App() {
     console.log("handleCountIncrement");
   };
 
-  const handleCountDecrement = () => {
-    setCount(count - 1);
-    console.log("handleCountDecrement");
-  };
+  const UseMemoChildComponent = useMemo(() => {
+    return <ChildComponent counter={counter} />;
+  }, [counter]);
 
-  // const useCallbackHandleCountIncrement = useCallback(() => {
-  //   setCount(count + 1);
-  //   console.log("useCallbackHandleCountIncrement");
-  // }, [count]);
+  useEffect(() => {
+    console.log("Parent rendered", count);
+  });
 
-  const useCallbackHandleCountIncrement = useCallback(handleCountIncrement, [
-    count,
-  ]);
-
-  const useCallbackHandleCountDecrement = useCallback(handleCountDecrement, [
-    count,
-  ]);
-
-  const handleCounterDecrement = () => {
-    setCounter(counter - 1);
-    console.log("handleCounterDecrement");
-  };
-
-  // const useCallbackHandleCounterDecrement = useCallback(() => {
-  //   setCounter(counter - 1);
-  //   console.log("useCallbackHandleCounterDecrement");
-  // }, [counter]);
-
-  const useCallbackHandleCounterDecrement = useCallback(
-    handleCounterDecrement,
-    [counter]
-  );
-
-  console.log("component rendered", count);
-
-  functionCounterSet.add(useCallbackHandleCountIncrement);
-  functionCounterSet.add(useCallbackHandleCountDecrement);
-  functionCounterSet.add(useCallbackHandleCounterDecrement);
-
-  console.log("functionCounterSet", functionCounterSet);
+  console.log("AppComponent rendered", count);
 
   return (
     <>
       <div className="flex flex-col justify-center items-center gap-4">
-        <div className=" flex gap-4">
-          <h1 className="text-3xl text-red-500 font-bold underline">
-            Counter is {counter}
-          </h1>
-
-          <button
-            className="px-4 py-2 rounded bg-blue-500 text-white"
-            onClick={useCallbackHandleCounterDecrement}
-          >
-            - Counter
-          </button>
-        </div>
+        {UseMemoChildComponent}
+        {/* <ChildComponent /> */}
 
         <div className=" flex gap-4">
           <h1 className="text-3xl text-red-500 font-bold underline">
@@ -76,9 +41,15 @@ function App() {
 
           <button
             className="px-4 py-2 rounded bg-blue-500 text-white"
-            onClick={useCallbackHandleCountIncrement}
+            onClick={handleCountIncrement}
           >
             + Count
+          </button>
+          <button
+            className="px-4 py-2 rounded bg-blue-500 text-white"
+            onClick={() => setCounter(counter + 1)}
+          >
+            + Counter
           </button>
         </div>
       </div>
