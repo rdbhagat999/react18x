@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import "./App.css";
 
 function App() {
@@ -16,19 +16,19 @@ function App() {
     console.log("[hook 2]");
   }, []);
 
-  useEffect(() => {
-    console.log("[hook 3]");
-  }, [sync]);
+  useLayoutEffect(() => {
+    console.log("inside [useLayoutEffect] without dependencies array");
+  });
 
-  useEffect(() => {
-    console.log("[hook 4]");
-    document.title = "hello_" + count;
-  }, [sync]);
+  useLayoutEffect(() => {
+    console.log("inside [useLayoutEffect] with dependencies array");
+  }, []);
 
-  useEffect(() => {
-    console.log("[hook 5]");
+  useLayoutEffect(() => {
+    document.title = "ttttttttttt";
     document.title = "hello_" + count;
-  }, [sync, count]);
+    console.log("inside [useLayoutEffect] set document title");
+  }, [count]);
 
   return (
     <>
