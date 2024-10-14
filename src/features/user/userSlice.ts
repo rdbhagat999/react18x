@@ -16,12 +16,12 @@ export interface IUser {
 
 export interface IUserState {
   userList: IUser[];
-  isLoading: boolean;
+  isUserLoading: boolean;
 }
 
 const initialState: IUserState = {
   userList: [] as IUser[],
-  isLoading: true,
+  isUserLoading: true,
 } satisfies IUserState;
 
 export const getUserList = createAsyncThunk(
@@ -57,14 +57,14 @@ export const userSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(getUserList.pending, (state) => {
-        state.isLoading = true;
+        state.isUserLoading = true;
       })
       .addCase(getUserList.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.isUserLoading = false;
         state.userList = action.payload;
       })
       .addCase(getUserList.rejected, (state) => {
-        state.isLoading = false;
+        state.isUserLoading = false;
       });
   },
 });
