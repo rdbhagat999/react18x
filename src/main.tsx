@@ -1,18 +1,19 @@
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
-import { appRoutes } from "./routes";
+
+import AppRouterComponent from "./routes/index.tsx";
+import GlobalSpinner from "./components/GlobalSpinner.tsx";
+
 import { store } from "./store.ts";
 
-import GlobalSpinner from "./components/GlobalSpinner.tsx";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Suspense fallback={<GlobalSpinner />}>
       <Provider store={store}>
-        <RouterProvider router={appRoutes} />
+        <AppRouterComponent />
       </Provider>
     </Suspense>
   </StrictMode>

@@ -1,30 +1,39 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
-import Home from "../components/Home";
 const PostList = lazy(() => import("../components/PostList"));
 const UserList = lazy(() => import("../components/UserList"));
+
+import Home from "../components/Home";
 
 import LoadingComponent from "../components/LoadingComponent";
 
 import App from "../App";
 
-export const appRoutes = createBrowserRouter([
+import GlobalErrorComponent from "../components/GlobalErrorComponent";
+import ErrorComponent from "../components/ErrorComponent";
+
+const appRoutes = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <GlobalErrorComponent />,
     children: [
       {
         index: true,
         element: <Home />,
+        loader: () => null,
+        errorElement: <ErrorComponent />,
       },
       {
         path: "/posts",
+        loader: () => null,
         element: (
           <Suspense fallback={<LoadingComponent text="posts" />}>
             <PostList />
           </Suspense>
         ),
+        errorElement: <ErrorComponent />,
       },
       {
         path: "/users",
@@ -33,6 +42,8 @@ export const appRoutes = createBrowserRouter([
             <UserList />
           </Suspense>
         ),
+        loader: () => null,
+        errorElement: <ErrorComponent />,
       },
       //   {
       //     path: "/dashboard",
@@ -47,3 +58,11 @@ export const appRoutes = createBrowserRouter([
     ],
   },
 ]);
+
+export default function AppRouterComponent() {
+  return (
+    <>
+      <RouterProvider router={appRoutes} />
+    </>
+  );
+}

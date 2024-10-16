@@ -28,8 +28,8 @@ export const getUserList = createAsyncThunk(
   "users/getUserList",
   async (name, thunkAPI) => {
     console.log("name", name);
-    console.log("thunkAPI", thunkAPI);
-    console.log("thunkAPI.getState()", thunkAPI.getState());
+    // console.log("thunkAPI", thunkAPI);
+    // console.log("thunkAPI.getState()", thunkAPI.getState());
 
     try {
       const resp = await axios(USER_LIST_URL);
