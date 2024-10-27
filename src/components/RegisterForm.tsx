@@ -11,7 +11,7 @@ const RegisterForm = () => {
   const {
     register,
     handleSubmit,
-    watch,
+    // watch,
     formState: { errors },
   } = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
