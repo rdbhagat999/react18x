@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 
 const PostList = lazy(() => import("../components/PostList"));
 const UserList = lazy(() => import("../components/UserList"));
+const RegisterForm = lazy(() => import("../components/RegisterForm"));
 
 import Home from "../components/Home";
 
@@ -40,6 +41,16 @@ const appRoutes = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingComponent text="users" />}>
             <UserList />
+          </Suspense>
+        ),
+        loader: () => null,
+        errorElement: <ErrorComponent />,
+      },
+      {
+        path: "/register",
+        element: (
+          <Suspense fallback={<LoadingComponent text="register" />}>
+            <RegisterForm />
           </Suspense>
         ),
         loader: () => null,

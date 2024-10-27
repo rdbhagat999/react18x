@@ -47,6 +47,11 @@ export default function Navbar() {
               Users
             </NavLink>
           </li>
+          <li>
+            <NavLink className={"text-red-500"} to={`/register`}>
+              Register
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </>
