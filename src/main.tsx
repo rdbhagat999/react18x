@@ -1,10 +1,20 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import { StrictMode, Suspense } from "react";
+import { createRoot } from "react-dom/client";
+import { Provider } from "react-redux";
 
-createRoot(document.getElementById('root')!).render(
+import AppRouterComponent from "./routes/index.tsx";
+import GlobalSpinner from "./components/GlobalSpinner.tsx";
+
+import { store } from "./store.ts";
+
+import "./index.css";
+
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
-)
+    <Suspense fallback={<GlobalSpinner />}>
+      <Provider store={store}>
+        <AppRouterComponent />
+      </Provider>
+    </Suspense>
+  </StrictMode>
+);

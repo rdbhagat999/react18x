@@ -1,35 +1,23 @@
-import { useEffect, useState } from "react";
+import { Outlet, useNavigation } from "react-router-dom";
+import Navbar from "./components/Navbar";
 import "./App.css";
+import GlobalSpinner from "./components/GlobalSpinner";
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [sync, setSync] = useState(false);
-
-  useEffect(() => {
-    document.title = "hello_" + count;
-  }, [sync, count]);
+  const navigation = useNavigation();
 
   return (
-    <>
-      <h1 className="text-3xl text-red-500 font-bold underline">
-        Hello world!
+    <main className="w-full h-full min-h-screen text-center">
+      <h1 className="text-3xl text-gray-700 font-bold underline">
+        Layout Component
       </h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
 
-        <button onClick={() => setSync((sync) => !sync)}>
-          sync is {sync ? "true" : "false"}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      <Navbar />
+
+      {navigation.state === "loading" && <GlobalSpinner />}
+
+      <Outlet></Outlet>
+    </main>
   );
 }
 
